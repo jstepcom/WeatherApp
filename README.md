@@ -1,2 +1,2 @@
 # WeatherApp
- Final Project for SheCodes + curse
+ Final Project for SheCodes+ course
