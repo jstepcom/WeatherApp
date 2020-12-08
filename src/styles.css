@@ -96,3 +96,7 @@ img{
     overflow: auto;
     border-radius: 5px;
 }
+.coder-info{
+    font-family: 'East Sea Dokdo', cursive;
+    font-size: 10px;
+}
