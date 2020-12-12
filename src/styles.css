@@ -10,8 +10,10 @@ body{
     padding: 10px;;
 }
 .card{
-    margin-top: 100px; 
+    margin-top: 75px; 
     overflow: hidden;
+    max-width: 1000px;
+    background-image: linear-gradient(-20deg, #e9defa 0%, #fbfcdb 100%);
 }
 .input-group{
     margin-top: 15px;
@@ -81,7 +83,7 @@ h5{
   #celcius{
   font-weight:bold;
   }
-.titleImg{
+#mainIcon{
        width: 18%;
        margin: 0;
        display: inline;
@@ -99,4 +101,7 @@ img{
 .coder-info{
     font-family: 'East Sea Dokdo', cursive;
     font-size: 25px;
+}
+.icon{
+    width: 30px;
 }

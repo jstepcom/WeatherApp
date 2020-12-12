@@ -57,11 +57,13 @@ function getForecast(response){
   let uvIndex = document.querySelector("#uvi");
   let humidity = document.querySelector("#humidity");
   let limits = document.querySelectorAll(".lim");
+  let iconElement = document.querySelectorAll(".icon");
  // Vars for the api data
   let presData = response.data.current.pressure;
   let windData = response.data.current.wind_speed;
   let uviData = response.data.current.uvi;
   let humiData = response.data.current.humidity;
+  let iconData = null;
   tzData = response.data.timezone;
   //Other variables
   let max = [];
@@ -76,6 +78,9 @@ function getForecast(response){
    max [i] = Math.round(response.data.daily[i].temp.max);
    min [i]= Math.round(response.data.daily[i].temp.min);
    limits [i].innerHTML = `${max[i]}° - <span style ='font-size:13px'>${min[i]}°</span>`;
+   iconData = response.data.daily[i].weather[0].icon;
+   iconElement[i].setAttribute("src",`http://openweathermap.org/img/wn/${iconData}@2x.png`);
+   iconElement[i].setAttribute("alt",response.data.daily[i].weather[0].description);
   }  
   //Replace values in html
   pressure.innerHTML = `${presData} hPa`;
@@ -83,6 +88,10 @@ function getForecast(response){
   uvIndex.innerHTML = Math.round(uviData);
   humidity.innerHTML = `${humiData}%`;
   days.forEach(setDay);
+}
+function setImage(response){
+  console.log(response);
+  
 }
 /** 
 * Get the temperature and other data from the weather Api and show it in the html.
@@ -93,20 +102,31 @@ function getTemperature(response){
   let location = document.querySelector(".city");
   let temperature = document.querySelector("#temperature");
   let weather = document.querySelector("#today");
+  let mainIconElement = document.querySelector("#mainIcon")
   // Vars for the api data
   let temp = response.data.main.temp;
-  let sky = response.data.weather[0].main;
+  let sky = response.data.weather[0].description;
   let max = response.data.main.temp_max;
   let min = response.data.main.temp_min;
   let latitude = response.data.coord.lat;
   let longitud = response.data.coord.lon;
+  let mainIconData = response.data.weather[0].icon;
+  let cityName = response.data.name;
   //Replace info in html
+  sky = sky.charAt(0).toUpperCase()+sky.slice(1);
   temperature.innerHTML = Math.round(temp);
-  location.innerHTML = `${response.data.name}, <span style = 'font-size:20px'>${response.data.sys.country}</span>`;
+  location.innerHTML = `${cityName}, <span style = 'font-size:20px'>${response.data.sys.country}</span>`;
   weather.innerHTML = `${sky} |<span style = 'font-size:20px'> Max. ${Math.round(max)}° - Min. ${Math.round(min)}°</span>`;
+  mainIconElement.setAttribute("src",`http://openweathermap.org/img/wn/${mainIconData}@2x.png`);
+  mainIconElement.setAttribute("alt", response.data.weather[0].description);
+  //setImage(cityName);
   //Get Forecast data
   apiUrl = `${dailyUrl}lat=${latitude}&lon=${longitud}&units=${unit}&appid=${apiKey}`;
   axios.get(apiUrl).then(getForecast);
+  /*Picture API
+  let gKey=`AIzaSyDyrWvDTyHza8d4mIG1yLk7oXZLCDGImJY`;
+  let gUrl =`https://maps.googleapis.com/maps/api/place/photo?${cityName}&${gKey}`;
+  axios.get(gUrl).then(setImage);*/
 }
 /** 
 * Get the information of the form and send the city name to the Api, call the function to get the temperature.
