@@ -30,6 +30,7 @@ function setDay(element, index){
   }else{
    dayElement.innerHTML = `${week[date.getDay()+index+1]}`; 
   }
+  console.log(dayElement, increm, index)
 }
 /** 
 * Get the hour and minutes, if minutes is <10 add a 0 to have :0x.
@@ -170,6 +171,7 @@ function getPosition(position){
 */
 function changeUnit(index){
   let city = document.querySelector(".city").textContent;
+  increm = 0;
   city = city.split(",");
   if (index === 0){
     unit = "metric";
