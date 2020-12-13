@@ -7,7 +7,8 @@ body{
     background-color: blueviolet;
     color:#ffff;
     font-family: "Architects Daughter", cursive;
-    padding: 10px;;
+    padding: 10px;
+    border-radius: 10px;
 }
 .card{
     margin-top: 75px; 
@@ -59,6 +60,10 @@ body{
 }
 .col-4{
     text-align: left;
+}
+.col-md-8{
+   /* background-image: linear-gradient(-20deg, #e9defa 0%, #fbfcdb 100%);*/
+   background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
 }
 h1{
     display: inline;

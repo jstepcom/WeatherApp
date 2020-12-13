@@ -17,7 +17,21 @@ let lat = 0;
 let lon = 0;
 let unit = "metric";
 let sys = ["C","km/h"];
-
+/** 
+* Alert message, with format.
+* @param {string} img - Specific string for the icon.
+* @param {Int} time - Miliseconds to wait before closing the alert.
+* @param {string} txt - Text that will be shown.
+*/
+function sendAlert(img,time,txt){
+  Swal.fire({
+    position: 'top-end',
+    icon: img,
+    title: txt,
+    showConfirmButton: false,
+    timer: time
+  })
+}
 /** 
 * For each element of the array day searhc the following 5 days and put them in the right order.
 * @param {Int} element - get the element name of the html
@@ -90,8 +104,11 @@ function getForecast(response){
   humidity.innerHTML = `${humiData}%`;
   days.forEach(setDay);
 }
+/** 
+* Get the image Url from the api and replace the html element.
+* @param {JSON} response - the object send by the api.
+*/
 function setImage(response){
- // let imageElement = document.querySelector(".card-img")
   let imageUrl = response.data.photos[0].image.web;
   imageElement.setAttribute("src", imageUrl);  
 }
@@ -121,31 +138,25 @@ function getTemperature(response){
   weather.innerHTML = `${sky} |<span style = 'font-size:20px'> Max. ${Math.round(max)}° - Min. ${Math.round(min)}°</span>`;
   mainIconElement.setAttribute("src",`http://openweathermap.org/img/wn/${mainIconData}@2x.png`);
   mainIconElement.setAttribute("alt", response.data.weather[0].description);
-  //setImage(cityName);
   //Get Forecast data
   apiUrl = `${dailyUrl}lat=${latitude}&lon=${longitud}&units=${unit}&appid=${apiKey}`;
   axios.get(apiUrl).then(getForecast);
-  //Picture API
-  //cityName = cityName.replace(" ", "-").toLowerCase();
+  //Get picture API data
   cityName = cityName.toLowerCase();
   let imgUrl =`https://api.teleport.org/api/cities/?search=${cityName}`;
   axios.get(imgUrl).then(function(response){
-  let cityID = response.data._embedded["city:search-results"][0]._links["city:item"].href;
-  axios.get(cityID).then(function(response){
-    try{
-    let cityArea = `${response.data._links["city:urban_area"].href}images/`;
-    axios.get(cityArea).then(setImage);
-    }catch{
-      Swal.fire({
-        position: 'top-end',
-        icon: 'error',
-        title: 'Ah ah aha There is no image for this city',
-        showConfirmButton: false,
-        timer: 1500
-      })
-      imageElement.setAttribute("src", "https://vignette.wikia.nocookie.net/ytmnd-fads/images/9/92/Giphy.gif/revision/latest?cb=20191210172355");
-    }
-    
+    let cityID = response.data._embedded["city:search-results"][0]._links["city:item"].href;
+    axios.get(cityID).then(function(response){
+      try{
+        let cityArea = `${response.data._links["city:urban_area"].href}images/`;
+        axios.get(cityArea).then(setImage);
+      }
+      catch{
+        let msg = "Ah ah aha There is no image for this city";
+        sendAlert("error",1500, msg);       
+        imageElement.setAttribute("src", 
+        "https://vignette.wikia.nocookie.net/ytmnd-fads/images/9/92/Giphy.gif/revision/latest?cb=20191210172355");
+      }
    });
   });
 }
@@ -162,13 +173,8 @@ function searchCity(event) {
   farenheith.style.fontWeight='normal';
   if (city === "") {
     document.querySelector(".form-control").focus();
-    Swal.fire({
-      position: 'top-end',
-      icon: 'warning',
-      title: 'Please type a city',
-      showConfirmButton: false,
-      timer: 1000
-    })
+    let msg = 'Please type a city';
+    sendAlert("warning",1000,msg);
   } else {
     increm = 0;
     apiUrl = `${currUrl}q=${city}&units=${unit}&appid=${apiKey}`;
