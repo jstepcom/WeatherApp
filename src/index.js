@@ -1,6 +1,7 @@
 //Variables
 let celsius = document.querySelector("#celcius");
 let farenheith = document.querySelector("#farenheith");
+let imageElement = document.querySelector(".card-img")
 let week = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 let days = ["one","two","three","four","five","six"];
 let date = new Date(); 
@@ -30,7 +31,6 @@ function setDay(element, index){
   }else{
    dayElement.innerHTML = `${week[date.getDay()+index+1]}`; 
   }
-  console.log(dayElement, increm, index)
 }
 /** 
 * Get the hour and minutes, if minutes is <10 add a 0 to have :0x.
@@ -91,8 +91,9 @@ function getForecast(response){
   days.forEach(setDay);
 }
 function setImage(response){
-  console.log(response);
-  
+ // let imageElement = document.querySelector(".card-img")
+  let imageUrl = response.data.photos[0].image.web;
+  imageElement.setAttribute("src", imageUrl);  
 }
 /** 
 * Get the temperature and other data from the weather Api and show it in the html.
@@ -124,10 +125,29 @@ function getTemperature(response){
   //Get Forecast data
   apiUrl = `${dailyUrl}lat=${latitude}&lon=${longitud}&units=${unit}&appid=${apiKey}`;
   axios.get(apiUrl).then(getForecast);
-  /*Picture API
-  let gKey=`AIzaSyDyrWvDTyHza8d4mIG1yLk7oXZLCDGImJY`;
-  let gUrl =`https://maps.googleapis.com/maps/api/place/photo?${cityName}&${gKey}`;
-  axios.get(gUrl).then(setImage);*/
+  //Picture API
+  //cityName = cityName.replace(" ", "-").toLowerCase();
+  cityName = cityName.toLowerCase();
+  let imgUrl =`https://api.teleport.org/api/cities/?search=${cityName}`;
+  axios.get(imgUrl).then(function(response){
+  let cityID = response.data._embedded["city:search-results"][0]._links["city:item"].href;
+  axios.get(cityID).then(function(response){
+    try{
+    let cityArea = `${response.data._links["city:urban_area"].href}images/`;
+    axios.get(cityArea).then(setImage);
+    }catch{
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: 'Ah ah aha There is no image for this city',
+        showConfirmButton: false,
+        timer: 1500
+      })
+      imageElement.setAttribute("src", "https://vignette.wikia.nocookie.net/ytmnd-fads/images/9/92/Giphy.gif/revision/latest?cb=20191210172355");
+    }
+    
+   });
+  });
 }
 /** 
 * Get the information of the form and send the city name to the Api, call the function to get the temperature.

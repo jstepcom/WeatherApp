@@ -13,7 +13,6 @@ body{
     margin-top: 75px; 
     overflow: hidden;
     max-width: 1000px;
-   /* background-image: linear-gradient(-20deg, #e9defa 0%, #fbfcdb 100%);*/
 }
 .input-group{
     margin-top: 15px;
@@ -104,4 +103,8 @@ img{
 }
 .icon{
     width: 30px;
+}
+.card-img{
+    width: 400px;
+    height: 250px;
 }
