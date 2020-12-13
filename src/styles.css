@@ -15,7 +15,8 @@ body{
     margin-top: 75px; 
     overflow: hidden;
     max-width: 1000px;
-    background-image: linear-gradient(to right,#fff 0%, #accbee 50%, #e7f0fd 100%);
+   /*background-image: linear-gradient(to right,#fff 0%, #accbee 50%, #e7f0fd 100%);*/
+    background-image: linear-gradient(20deg,#e9defa 5%,#fbfcdb 25%,#accbee 100%);
 }
 .input-group{
     margin-top: 15px;
@@ -63,10 +64,6 @@ body{
 .col-4{
     text-align: left;
 }
-.col-md-8{
-   /* background-image: linear-gradient(-20deg, #e9defa 0%, #fbfcdb 100%);
-   background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);*/
-}
 h1{
     display: inline;
     padding: 5px 15px ;
@@ -112,6 +109,7 @@ img{
     width: 30px;
 }
 .card-img{
-    width: 400px;
+    width: 90%;
     height: 250px;
+    margin: 0 auto;
 }
